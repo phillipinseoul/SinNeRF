@@ -31,7 +31,8 @@ if __name__ == '__main__':
         else:
             system.load_state_dict(dic['state_dict'], strict=False)
         print(f"Loaded model from <{hparams.pt_model}>")
-    checkpoint_callback = ModelCheckpoint(filepath=os.path.join(
+
+    checkpoint_callback = ModelCheckpoint(dirpath=os.path.join(
         f'ckpts/{hparams.exp_name}', '{epoch:d}'), monitor='val/psnr', mode='max', save_last=True, save_top_k=2)
 
     logger = TestTubeLogger(
@@ -45,15 +46,16 @@ if __name__ == '__main__':
                       checkpoint_callback=checkpoint_callback,
                       resume_from_checkpoint=hparams.ckpt_path,
                       logger=logger,
-                      early_stop_callback=None,
+                      # early_stop_callback=None,
                       weights_summary="full",
                       progress_bar_refresh_rate=1,
                       gpus=hparams.num_gpus,
-                      distributed_backend='ddp' if hparams.num_gpus > 1 else None,
+                      # distributed_backend='ddp' if hparams.num_gpus > 1 else None,
+                      accelerator='ddp' if hparams.num_gpus > 1 else None,
                       #   plugins=DDPPlugin(find_unused_parameters=False),
                       num_sanity_val_steps=1,
                       benchmark=True,
-                      #   precision=16,
+                      precision=16,
                       check_val_every_n_epoch=20,
                       #   prepare_data_per_node=True,
                       profiler=hparams.num_gpus == 1)

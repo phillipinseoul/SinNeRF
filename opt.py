@@ -29,6 +29,7 @@ def get_opts():
 
     parser.add_argument('--batch_size', type=int, default=1024,
                         help='batch size')
+    
     parser.add_argument('--chunk', type=int, default=32*1024,
                         help='chunk size to split the input to avoid OOM')
     parser.add_argument('--num_epochs', type=int, default=80,

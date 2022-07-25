@@ -11,7 +11,7 @@ dependencies:
   - bzip2=1.0.8=h7b6447c_0
   - ca-certificates=2021.10.8=ha878542_0
   - certifi=2021.10.8=py37h89c1867_2
-  - cudatoolkit=11.1.1=h6406543_8
+  - cudatoolkit=11.1.1=h6406543_8 
   - cudnn=8.2.1.32=h86fa8c9_0
   - decorator=5.1.1=pyhd3eb1b0_0
   - ffmpeg=4.3=hf484d3e_0

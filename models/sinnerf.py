@@ -16,6 +16,7 @@ from models.extractor import VitExtractor
 
 
 # optimizer, scheduler, visualization
+# from utils_temp import *
 from utils import *
 
 # losses
@@ -124,7 +125,8 @@ class GANLoss(nn.Module):
 class SinNeRF(LightningModule):
     def __init__(self, hparams):
         super(SinNeRF, self).__init__()
-        self.hparams = hparams
+        # self.hparams = hparams
+        self.hparams.update(vars(hparams))
 
         self.loss = loss_dict[hparams.loss_type]()
         self.patch_loss = loss_dict[hparams.patch_loss]()
