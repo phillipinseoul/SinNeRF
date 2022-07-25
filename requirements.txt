@@ -1,6 +1,7 @@
 torch
 torchvision
-pytorch-lightning==0.10.0
+# pytorch-lightning==0.10.0
+pytorch-lightning
 test-tube
 kornia
 opencv-python
