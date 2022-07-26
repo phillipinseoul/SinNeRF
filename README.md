@@ -1,14 +1,23 @@
 # SinNeRF: Training Neural Radiance Fields on Complex Scenes from a Single Image
-
-[Paper](https://arxiv.org/abs/2204.00928), [Project Page](https://vita-group.github.io/SinNeRF/)
+* This is a revised repository of SinNeRF based on different versions of Pytorch Lightning and some additional configurations for removing training errors.
+* Original resources are at: [Paper](https://arxiv.org/abs/2204.00928), [Project Page](https://vita-group.github.io/SinNeRF/)
 
 ## Changes
 * Changed Pytorch-Lightning version from 0.10.0 to 1.6.5 (latest)
 * If "ImportError: cannot import name 'trunc_normal' from 'utils'" occurs, 
-```bash
-$ cd ~/.cache/torch/hub/facebookresearch_dino_main
 ```
-then rename the file utils.py as another name (e.g. utils_v.py) and update all the import code for utils.py in that directory to the new name.
+cd ~/.cache/torch/hub/facebookresearch_dino_main
+```
+* Then rename the file utils.py as another name (e.g. utils_v.py) and update all the import code for utils.py in that directory to the new name.
+
+## How to run (Last updated: 2022/07/26)
+### 1. Train on NeRF Synthetic Dataset
+* Trained on 4 GPUs (NVIDIA RTX A5000) for ??? hours.
+* Initially set `--patch_size 64 --sW 6 --sH 6`, but OOM error occurred. Then changed to `--patch_size 32 --sW 12 --sH 12` and activated `precision=16` when initializing `Trainer()` in `train.py`.
+* Set `PL_TORCH_DISTRIBUTED_BACKEND=gloo` to remove errors during training.
+```
+PL_TORCH_DISTRIBUTED_BACKEND=gloo CUDA_VISIBLE_DEVICES="3,4,5,6" python train.py  --dataset_name blender_ray_patch_1image_rot3d  --root_dir  datasets/nerf_synthetic/lego   --N_importance 64 --img_wh 400 400 --num_epochs 2000 --batch_size 1  --optimizer adam --lr 2e-4  --lr_scheduler steplr --decay_step 500 1000 --decay_gamma 0.5  --exp_name lego_s6 --with_ref --patch_size 32 --sW 12 --sH 12 --proj_weight 1 --depth_smooth_weight 0  --dis_weight 0 --num_gpus 4 --load_depth --depth_type nerf --model sinnerf --depth_weight 8 --vit_weight 10 --scan 4
+```
 
 ## Pipeline
 
